@@ -6,7 +6,7 @@ export type Status =
   | "transactional";
 export interface IEmail {
   address: string;
-  dateChanged?: Date;
+  dateChange?: string;
 }
 export interface IAddress {
   line1?: string;
@@ -18,17 +18,17 @@ export interface IAddress {
 }
 export interface IPhone {
   number?: number;
-  dateChanged?: Date;
+  dateChanged?: string;
 }
 export interface ITodayVisitorsAttribute {
   value?: string;
-  dateChanged?: Date;
+  dateChanged?: string;
 }
 export interface IContact {
   firtsName?: string;
   lastName?: string;
   systemRecordId: string;
-  dateChanged: Date;
+  dateChanged: string;
   email: IEmail;
   tva?: ITodayVisitorsAttribute;
   address?: IAddress;
@@ -39,11 +39,11 @@ export interface IMerge_fields {
   LNAME?: string;
   ADDRESS1?: string;
   PHONE?: number;
-  BIRTHDAY?: Date;
+  BIRTHDAY?: string;
   TVA?: string;
-  TVADC?: Date;
-  PDC?: Date;
-  EADC?: Date;
+  TVADC?: string;
+  PDC?: string;
+  EADC?: string;
   ADDRESS2?: string;
   CITY?: string;
   COUNTRY?: string;
@@ -69,7 +69,7 @@ export interface IMember {
   ip_opt: string;
   timestamp_opt: string;
   member_rating: number;
-  last_changed: Date;
+  last_changed: string;
   language: string;
   vip: boolean;
   email_client: string;

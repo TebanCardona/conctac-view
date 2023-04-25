@@ -16,7 +16,7 @@ const organize = (data: { members: [IMember] }) => {
       dateChanged: el.last_changed,
       email: {
         address: el.email_address,
-        dateChanged: el.merge_fields.EADC,
+        dateChange: el.merge_fields.EADC,
       },
       tva: {
         value: el.merge_fields.TVA,
@@ -58,7 +58,7 @@ export async function get(id?: string | null, opt?: ListOptions) {
 
 export async function post(contact: ISend) {
   try {
-    const date = new Date();
+    const date = new Date().toDateString();
     contact.email_address ? (contact.merge_fields.EADC = date) : null;
     contact.merge_fields.PHONE ? (contact.merge_fields.PDC = date) : null;
     contact.merge_fields.TVA ? (contact.merge_fields.TVADC = date) : null;
@@ -74,7 +74,7 @@ export async function post(contact: ISend) {
 
 export async function patch(contact: ISend) {
   try {
-    const date = new Date();
+    const date = new Date().toDateString();
     const hash = md5(contact.email_address.toLowerCase());
     const conct = (await get(contact.email_address)) as IContact[];
     conct[0].email.address !== contact.email_address
