@@ -1,14 +1,21 @@
-import Link from "next/link";
-import Head from "next/head";
-import axios from "axios";
-import { Context } from "./context/context";
-import { useContext, useEffect } from "react";
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
+import axios from "axios";
+import { Inter } from "next/font/google";
+import Head from "next/head";
+import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import { Context } from "../context/context";
+import { convertToCSV, downloadCSV } from "../utils/CSV";
 const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
   const context = useContext(Context);
+  const [download, setdownload] = useState(false);
+  const handleDownload = async () => {
+    setdownload(true);
+    const csv = await convertToCSV(context.state.contacts);
+    downloadCSV(csv, "Data.csv");
+    setdownload(false);
+  };
   useEffect(() => {
     const options = {
       method: "GET",
@@ -33,26 +40,39 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
+      <h1>Contact</h1>
+      <nav>
         <div>
           {" "}
           <Link href={`/add`}>
             <button>Add</button>
           </Link>
+          <button onClick={handleDownload}>Download</button>
+          {download && (
+            <>
+              <p>Export...</p>
+            </>
+          )}
         </div>
-        <div>
+      </nav>
+      <main className={`${styles.main} ${inter.className}`}>
+        <h2>Contacts</h2>
+        <div className={`${styles.contact} ${inter.className}`}>
           {context.state.contacts.map((el) => {
             return (
-              <>
+              <div
+                key={el.email.address}
+                className={`${styles.contacts} ${inter.className}`}
+              >
                 <Link
                   href={{
                     pathname: "/contact",
                     query: { id: el.email.address },
                   }}
                 >
-                  <p>{el.email.address}</p>
+                  <span>{el.email.address} </span>
                 </Link>
-              </>
+              </div>
             );
           })}
         </div>

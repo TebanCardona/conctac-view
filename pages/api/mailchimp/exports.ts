@@ -14,6 +14,7 @@ const organize = (data: { members: [IMember] }) => {
       lastName: el.merge_fields.LNAME,
       systemRecordId: el.contact_id,
       dateChanged: el.last_changed,
+      status: el.status,
       email: {
         address: el.email_address,
         dateChange: el.merge_fields.EADC,
@@ -59,9 +60,9 @@ export async function get(id?: string | null, opt?: ListOptions) {
 export async function post(contact: ISend) {
   try {
     const date = new Date().toDateString();
-    contact.email_address ? (contact.merge_fields.EADC = date) : null;
-    contact.merge_fields.PHONE ? (contact.merge_fields.PDC = date) : null;
-    contact.merge_fields.TVA ? (contact.merge_fields.TVADC = date) : null;
+    contact.merge_fields.EADC = date;
+    contact.merge_fields.TVADC = date;
+    if (contact.merge_fields.PHONE !== "") contact.merge_fields.PDC = date;
     const res = await mailchimp.lists.addListMember(listId, contact);
     if ("id" in res) {
       return "Success";

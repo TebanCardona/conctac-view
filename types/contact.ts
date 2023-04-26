@@ -3,7 +3,8 @@ export type Status =
   | "unsubscribed"
   | "cleaned"
   | "pending"
-  | "transactional";
+  | "transactional"
+  | "archived";
 export interface IEmail {
   address: string;
   dateChange?: string;
@@ -12,21 +13,22 @@ export interface IAddress {
   line1?: string;
   line2?: string;
   city?: string;
-  zip?: number;
+  zip?: number | "" | string;
   state?: string;
   country?: string;
 }
 export interface IPhone {
-  number?: number;
+  number?: string;
   dateChanged?: string;
 }
 export interface ITodayVisitorsAttribute {
-  value?: string;
+  value?: "Yes" | "No";
   dateChanged?: string;
 }
 export interface IContact {
   firtsName?: string;
   lastName?: string;
+  status?: Status;
   systemRecordId: string;
   dateChanged: string;
   email: IEmail;
@@ -38,16 +40,16 @@ export interface IMerge_fields {
   FNAME?: string;
   LNAME?: string;
   ADDRESS1?: string;
-  PHONE?: number;
+  PHONE?: string;
   BIRTHDAY?: string;
-  TVA?: string;
+  TVA?: "Yes" | "No";
   TVADC?: string;
   PDC?: string;
   EADC?: string;
   ADDRESS2?: string;
   CITY?: string;
   COUNTRY?: string;
-  ZIP?: number;
+  ZIP?: number | "" | string;
   STATE?: string;
 }
 
@@ -59,7 +61,7 @@ export interface IMember {
   full_name?: string;
   web_id?: number;
   email_type?: string;
-  status?: string;
+  status?: Status;
   consents_to_one_to_one_messaging?: boolean;
   merge_fields: IMerge_fields;
   stats: {
