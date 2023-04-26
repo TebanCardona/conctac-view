@@ -3,6 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
 import Head from "next/head";
+import Loading from "@/components/Loading";
 export default function Add() {
   const [file, setFile] = useState<File | null>(null);
   const [state, setState] = useState({
@@ -60,11 +61,18 @@ export default function Add() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Link href={`/`}>
-        <p>Home</p>
+        <p style={{ fontSize: "x-large", textAlign: "center" }}>Home</p>
       </Link>
       <Form />
-      <div>
-        <h4>Send a CSV File</h4>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          color: "#e0e1dd",
+        }}
+      >
+        <h4 style={{ fontSize: "x-large" }}>Send a CSV File</h4>
         <form onSubmit={handleSubmit}>
           <label htmlFor="csv-file">Select a CSV file: </label>
           <input
@@ -75,11 +83,7 @@ export default function Add() {
           />
           <button type="submit"> Send </button>
         </form>
-        {state.charging && (
-          <>
-            <p>Charging</p>
-          </>
-        )}
+        {state.charging && <Loading />}
         {state.popup && (
           <>
             <p>{state.message}</p>{" "}
@@ -92,7 +96,7 @@ export default function Add() {
             </button>
             {state.dataError.length > 0 && (
               <>
-                <h3>Counts do not load</h3>
+                <h3>Contacts do not load</h3>
                 {state.dataError.map((el) => (
                   <p key={el?.email}>{el?.email}</p>
                 ))}

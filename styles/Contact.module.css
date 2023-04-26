@@ -1,4 +1,16 @@
-.contacts {
-  color: white;
-  text-decoration: double;
+.info {
+  text-align: center;
+  padding-top: 3em;
+}
+
+.info p {
+  color: #778da9;
+  font-weight: 500;
+  padding: 2px;
+}
+
+.info h5 {
+  font-size: large;
+  color: #e0e1dd;
+  padding: 1em;
 }

@@ -19,7 +19,6 @@ export default function Edit() {
       axios
         .request(options)
         .then(function (response) {
-          console.log(response.data);
           context.dispatch({ type: "contact", payload: response.data[0] });
         })
         .catch(function (error) {
@@ -46,7 +45,9 @@ export default function Edit() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Link href={"/"}>Home</Link>
+      <Link href={`/`}>
+        <p style={{ fontSize: "x-large", textAlign: "center" }}>Home</p>
+      </Link>
       <Form contact={contact} />
     </div>
   );

@@ -48,7 +48,6 @@ export default async function handler(
   }
   try {
     let { id, opt } = req.query as any;
-    if (opt) opt = JSON.parse(opt);
     if (typeof id === "string") {
       const data = (await get(id)) as [IContact];
       res.status(200).json(data);

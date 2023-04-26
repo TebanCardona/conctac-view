@@ -1,18 +1,22 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Context } from "../../context/context";
 import Dele from "../../components/Dele";
 import Head from "next/head";
+import Loading from "@/components/Loading";
+import styles from "@/styles/Contact.module.css";
 const Contact = () => {
   const context = useContext(Context);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const contact = context.state.contact;
   const un = <i>Unknown</i>;
   useEffect(() => {
     if (id) {
+      setLoading(true);
       const options = {
         method: "GET",
         url: `http://localhost:3000/api/mailchimp?id=${id}`,
@@ -24,8 +28,12 @@ const Contact = () => {
         })
         .catch(function (error) {
           console.error(error);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
+
     return () => {
       context.dispatch({
         type: "contact",
@@ -47,38 +55,58 @@ const Contact = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Link href={`/`}>Back</Link>
+      <nav
+        style={{
+          paddingTop: "1rem",
+          textAlign: "center",
+          paddingBottom: "2rem",
+        }}
+      >
+        <Link href={`/`}>
+          <p style={{ fontSize: "x-large" }}>Home</p>
+        </Link>
+      </nav>
       <Dele email={contact.email.address} />
-      <p>Contact: {id}</p>
-      <p>Firts Name: {contact.firtsName ? contact.firtsName : un}</p>
-      <p>Last Name: {contact.lastName ? contact.lastName : un}</p>
-      <p>
-        System Record Id: {contact.systemRecordId ? contact.systemRecordId : un}
-      </p>
-      <p>Last Date Changed: {contact.dateChanged.split("T")[0]}</p>
-      <p>
-        Email Date Changed:{" "}
-        {contact.email.dateChange ? contact.email.dateChange.split("T")[0] : un}
-      </p>
-      <h5>Phone</h5>
-      <p>Number: {contact.phone?.number ? contact.phone.number : un}</p>
-      <p>
-        Phone Date Changed:{" "}
-        {contact.phone?.dateChanged ? contact.phone.dateChanged : un}
-      </p>
-      <h5>Address</h5>
-      <p>Country: {contact.address?.country ? contact.address.country : un}</p>
-      <p>City: {contact.address?.city ? contact.address.city : un}</p>
-      <p>State: {contact.address?.state ? contact.address.state : un}</p>
-      <p>Line1: {contact.address?.line1 ? contact.address.line1 : un}</p>
-      <p>Line2: {contact.address?.line2 ? contact.address.line2 : un}</p>
-      <p>Zip Code: {contact.address?.zip ? contact.address.zip : un}</p>
-      <h5>Todays Visitors Attribute</h5>
-      <p>TVA: {contact.tva?.value ? contact.tva.value : un}</p>
-      <p>
-        TVA Date Changed:{" "}
-        {contact.tva?.dateChanged ? contact.tva.dateChanged : un}
-      </p>
+      {loading && <Loading />}
+      {!loading && (
+        <div className={`${styles.info}`}>
+          <h5>Contact: {id}</h5>
+          <p>
+            System Record Id:{" "}
+            {contact.systemRecordId ? contact.systemRecordId : un}
+          </p>
+          <p>Firts Name: {contact.firtsName ? contact.firtsName : un}</p>
+          <p>Last Name: {contact.lastName ? contact.lastName : un}</p>
+          <p>Last Date Changed: {contact.dateChanged.split("T")[0]}</p>
+          <p>
+            Email Date Changed:{" "}
+            {contact.email.dateChange
+              ? contact.email.dateChange.split("T")[0]
+              : un}
+          </p>
+          <h5>Phone</h5>
+          <p>Number: {contact.phone?.number ? contact.phone.number : un}</p>
+          <p>
+            Phone Date Changed:{" "}
+            {contact.phone?.dateChanged ? contact.phone.dateChanged : un}
+          </p>
+          <h5>Address</h5>
+          <p>
+            Country: {contact.address?.country ? contact.address.country : un}
+          </p>
+          <p>City: {contact.address?.city ? contact.address.city : un}</p>
+          <p>State: {contact.address?.state ? contact.address.state : un}</p>
+          <p>Line1: {contact.address?.line1 ? contact.address.line1 : un}</p>
+          <p>Line2: {contact.address?.line2 ? contact.address.line2 : un}</p>
+          <p>Zip Code: {contact.address?.zip ? contact.address.zip : un}</p>
+          <h5>Todays Visitors Attribute</h5>
+          <p>TVA: {contact.tva?.value ? contact.tva.value : un}</p>
+          <p>
+            TVA Date Changed:{" "}
+            {contact.tva?.dateChanged ? contact.tva.dateChanged : un}
+          </p>
+        </div>
+      )}
     </>
   );
 };

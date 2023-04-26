@@ -6,29 +6,99 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/context";
 import { convertToCSV, downloadCSV } from "../utils/CSV";
+import Loading from "@/components/Loading";
 const inter = Inter({ subsets: ["latin"] });
+
 export default function Home() {
   const context = useContext(Context);
+  const [state, setState] = useState({
+    message: "",
+    loading: false,
+    contactsFilter: context.state.contacts,
+  });
+  const status = [
+    "subscribed",
+    "unsubcribed",
+    "archived",
+    "cleaned",
+    "pending",
+    "transactional",
+  ];
   const [download, setdownload] = useState(false);
+  const changeContact = (options: {}) => {
+    setState((prev) => ({
+      ...prev,
+      loading: true,
+    }));
+
+    axios
+      .request(options)
+      .then(function (response) {
+        context.dispatch({ type: "contacts", payload: response.data });
+        setState((prev) => ({
+          ...prev,
+          contactsFilter: response.data,
+        }));
+      })
+      .catch(function (error) {
+        console.error(error);
+        setState((prev) => ({
+          ...prev,
+          message: error.response.data.message,
+        }));
+      })
+      .finally(() => {
+        setState((prev) => ({
+          ...prev,
+          loading: false,
+        }));
+      });
+  };
   const handleDownload = async () => {
     setdownload(true);
     const csv = await convertToCSV(context.state.contacts);
     downloadCSV(csv, "Data.csv");
     setdownload(false);
   };
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setState((prev) => ({
+      ...prev,
+      [name]: value,
+      contactsFilter: [],
+    }));
+    if (name === "status") {
+      const options = {
+        method: "GET",
+        url: "http://localhost:3000/api/mailchimp",
+        params: { opt: value },
+      };
+      changeContact(options);
+      return;
+    }
+    if (value === "") {
+      setState((prev) => ({ ...prev, contactsFilter: context.state.contacts }));
+      return;
+    }
+    const regex = new RegExp(`^${value}`, "i");
+    setState((prev) => ({
+      ...prev,
+      contactsFilter: context.state.contacts.filter((el) =>
+        regex.test(el.email.address)
+      ),
+    }));
+  };
   useEffect(() => {
     const options = {
       method: "GET",
       url: "http://localhost:3000/api/mailchimp",
     };
-    axios
-      .request(options)
-      .then(function (response) {
-        context.dispatch({ type: "contacts", payload: response.data });
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+    changeContact(options);
+    return () => {
+      context.dispatch({ type: "contacts", payload: [] });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -40,12 +110,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>Contact</h1>
-      <nav>
+      <nav className={`${styles.nav} ${inter.className}`}>
+        <h1>Contact View</h1>
         <div>
           {" "}
           <Link href={`/add`}>
-            <button>Add</button>
+            <button>Add Contact</button>
           </Link>
           <button onClick={handleDownload}>Download</button>
           {download && (
@@ -54,15 +124,40 @@ export default function Home() {
             </>
           )}
         </div>
+        <div
+          style={{ justifyContent: "center" }}
+          className={`${styles.filter} ${inter.className}`}
+        >
+          <input
+            type="text"
+            placeholder="Search..."
+            name="search"
+            onChange={handleChange}
+          />
+          <select name="status" id="status" onChange={handleChange}>
+            {status.map((el) => (
+              <option
+                key={el}
+                value={el}
+                style={{ textTransform: "capitalize" }}
+              >
+                {el}
+              </option>
+            ))}
+          </select>
+        </div>
       </nav>
+      <h2 style={{ color: "aliceblue", textAlign: "center" }}>
+        Total contacts: {state.contactsFilter.length}
+      </h2>
       <main className={`${styles.main} ${inter.className}`}>
-        <h2>Contacts</h2>
-        <div className={`${styles.contact} ${inter.className}`}>
-          {context.state.contacts.map((el) => {
+        {state.loading && <Loading />}
+        <div className={`${styles.contacts} ${inter.className}`}>
+          {state.contactsFilter.map((el) => {
             return (
               <div
                 key={el.email.address}
-                className={`${styles.contacts} ${inter.className}`}
+                className={`${styles.contact} ${inter.className}`}
               >
                 <Link
                   href={{

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Link from "next/link";
 import axios from "axios";
 import { Status, ISend, IContact } from "@/types/contact";
+import styles from "@/styles/Edit.module.css";
 interface IForm {
   [key: string]: any;
   first_Name?: string;
@@ -118,84 +118,89 @@ export default function Form(props?: { contact?: IContact }) {
     }));
   };
   return (
-    <div>
+    <div className={`${styles.main}`}>
       <form onSubmit={handleSubmit}>
-        {" "}
-        <div>
-          <label htmlFor="Email">Email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
+        <div className={`${styles.form}`}>
+          {" "}
+          <div>
+            <label htmlFor="Email" className={`${styles["input-label"]}`}>
+              Email{" "}
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email}
+              className={`${styles["input-field"]}`}
+              onChange={handleChange}
+            />
+          </div>
+          {data.name.map((el) => {
+            return (
+              <div key={el}>
+                <label htmlFor={el} style={{ textTransform: "capitalize" }}>
+                  {el.replace("_", " ") + " "}
+                </label>
+                <input
+                  type="text"
+                  name={el}
+                  id={el}
+                  value={formData[el]}
+                  onChange={handleChange}
+                />
+              </div>
+            );
+          })}
+          <div>
+            <label htmlFor="TVA value">TVA value </label>
+            <select
+              name="tva"
+              id="tva"
+              value={formData.tva}
+              onChange={handleChange}
+            >
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="Status">Status </label>
+            <select name="status" id="status" required>
+              {data.status.map((el) => (
+                <option
+                  value={el}
+                  key={el}
+                  style={{ textTransform: "capitalize" }}
+                >
+                  {el}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="Phone Number">Phone Number </label>
+            <input
+              type="tel"
+              name="number"
+              id="number"
+              value={formData.number}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="ZIP Code">ZIP Code </label>
+            <input
+              type="number"
+              name="zip"
+              id="zip"
+              value={formData.zip}
+              onChange={handleChange}
+            />
+          </div>
         </div>
-        {data.name.map((el) => {
-          return (
-            <div key={el}>
-              <label htmlFor={el} style={{ textTransform: "capitalize" }}>
-                {el.replace("_", " ")}
-              </label>
-              <input
-                type="text"
-                name={el}
-                id={el}
-                value={formData[el]}
-                onChange={handleChange}
-              />
-            </div>
-          );
-        })}
-        <div>
-          <label htmlFor="Today Visators Attribute">
-            Today Visators Attribute
-          </label>
-          <select
-            name="tva"
-            id="tva"
-            value={formData.tva}
-            onChange={handleChange}
-          >
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-          </select>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <button type="submit">Submit</button>
         </div>
-        <div>
-          <label htmlFor="Status">Status</label>
-          <select name="status" id="status" required>
-            {data.status.map((el) => (
-              <option
-                value={el}
-                key={el}
-                style={{ textTransform: "capitalize" }}
-              >
-                {el}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="Phone Number">Phone Number</label>
-          <input
-            type="tel"
-            name="number"
-            id="number"
-            value={formData.number}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="ZIP Code">ZIP Code</label>
-          <input
-            type="number"
-            name="zip"
-            id="zip"
-            value={formData.zip}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
       </form>
       <p>{res.message}</p>
     </div>

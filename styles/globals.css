@@ -31,6 +31,21 @@
   --card-border-rgb: 131, 134, 135;
 }
 
+button:hover {
+  background-color: #0d1b2a;
+  color: #e0e1dd;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+}
+
+button {
+  border-radius: var(--border-radius);
+  height: 3em;
+  width: 7em;
+  font-weight: 600;
+  font-size: medium;
+  margin: 1em;
+}
 
 * {
   box-sizing: border-box;
@@ -42,6 +57,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  height: 100%;
 }
 
 body {
@@ -50,18 +66,22 @@ body {
 }
 
 a {
-  color: inherit;
+  color: #e0e1dd;
   text-decoration: none;
 }
 
+a:hover {
+  color: #778da9;
+}
+
 html {
-  background: hsla(0, 3%, 12%, 1);
+  background: hsla(211, 53%, 11%, 1);
 
-  background: linear-gradient(135deg, hsla(0, 3%, 12%, 1) 0%, hsla(225, 6%, 26%, 1) 100%);
+  background: linear-gradient(135deg, hsla(211, 53%, 11%, 1) 38%, hsla(214, 23%, 56%, 1) 100%);
 
-  background: -moz-linear-gradient(135deg, hsla(0, 3%, 12%, 1) 0%, hsla(225, 6%, 26%, 1) 100%);
+  background: -moz-linear-gradient(135deg, hsla(211, 53%, 11%, 1) 38%, hsla(214, 23%, 56%, 1) 100%);
 
-  background: -webkit-linear-gradient(135deg, hsla(0, 3%, 12%, 1) 0%, hsla(225, 6%, 26%, 1) 100%);
+  background: -webkit-linear-gradient(135deg, hsla(211, 53%, 11%, 1) 38%, hsla(214, 23%, 56%, 1) 100%);
 
-  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#201E1E", endColorstr="#3F4147", GradientType=1);
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#0D1B2A", endColorstr="#778DA9", GradientType=1);
 }

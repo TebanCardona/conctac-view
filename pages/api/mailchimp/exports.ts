@@ -1,5 +1,5 @@
 import md5 from "md5";
-import mailchimp from "@mailchimp/mailchimp_marketing";
+import mailchimp, { Status } from "@mailchimp/mailchimp_marketing";
 import { IContact, IMember, ISend, ListOptions } from "../../../types/contact";
 
 mailchimp.setConfig({
@@ -39,7 +39,7 @@ const organize = (data: { members: [IMember] }) => {
     return member;
   });
 };
-export async function get(id?: string | null, opt?: ListOptions) {
+export async function get(id?: string | null, opt?: Status) {
   try {
     if (typeof id === "string") {
       const hashId = md5(id.toLowerCase());
@@ -48,7 +48,11 @@ export async function get(id?: string | null, opt?: ListOptions) {
         return organize({ members: [res] });
       }
     }
-    const res = await mailchimp.lists.getListMembersInfo(listId, opt);
+
+    const res = await mailchimp.lists.getListMembersInfo(listId, {
+      status: opt,
+      count: 1000,
+    });
     if ("members" in res) {
       return organize(res);
     }

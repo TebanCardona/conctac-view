@@ -1,23 +1,68 @@
 .main {
+  align-items: center;
+  padding: 6rem;
+  padding-top: 3em;
+  height: 500px;
+}
+
+.filter {
+  display: flex;
+  padding: 1em;
+  justify-content: center;
+
+}
+
+.filter select {
+  font-size: large;
+  text-transform: capitalize;
+}
+
+.filter input {
+  font-size: large;
+}
+
+
+.nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 6rem;
+  padding: 5rem;
+  padding-top: 3rem;
+}
+
+.nav div {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+
+.nav h1 {
+  color: aliceblue;
+  font-size: xx-large;
+}
+
+.main h2 {
+  color: aliceblue;
 }
 
 .contacts {
-  padding: 1em;
+  margin: 1em;
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fill, minmax(19.4rem, 1fr));
+  margin-top: 0.5rem;
+  justify-items: center;
 }
 
 .contact {
   color: white;
   display: flex;
-  flex-wrap: wrap;
   width: max-content;
   height: max-content;
-  padding: 1em;
+  padding: 3em;
 }
 
 .contacts:hover {
-  color: blue;
+  color: rgb(87, 87, 232);
 }
