@@ -226,7 +226,16 @@ export default function Form(props?: { contact?: IContact }) {
         </div>
       </form>
       {res.loading && <Loading />}
-      <p>{res.message}</p>
+      <p
+        style={{
+          color: "#86a9da",
+          fontWeight: "600",
+          fontSize: "25px",
+          padding: "2px",
+        }}
+      >
+        {res.message}
+      </p>
     </div>
   );
 }

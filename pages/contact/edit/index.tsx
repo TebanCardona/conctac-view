@@ -46,7 +46,15 @@ export default function Edit() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Link href={`/`}>
-        <p style={{ fontSize: "x-large", textAlign: "center" }}>Home</p>
+        <p
+          style={{
+            fontSize: "x-large",
+            textAlign: "center",
+            paddingTop: "1em",
+          }}
+        >
+          Home
+        </p>
       </Link>
       <Form contact={contact} />
     </div>

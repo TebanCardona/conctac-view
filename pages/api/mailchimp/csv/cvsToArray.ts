@@ -35,7 +35,9 @@ async function csvToArray(file: {}) {
         obj[headers[j]] = currentline[j];
       }
       const contact: ISend = {
-        email_address: obj["Email Addresses\\Email address"],
+        email_address: obj["Email Addresses\\Email address"]
+          ? obj["Email Addresses\\Email address"]
+          : "Email not found",
         status: "subscribed",
         merge_fields: {
           ADDRESS1: obj["Addresses\\Address line 1"],
@@ -43,7 +45,7 @@ async function csvToArray(file: {}) {
           CITY: obj["Addresses\\City"],
           COUNTRY: obj["Addresses\\Country abbreviation"],
           STATE: obj["Addresses\\State abbreviation"],
-          ZIP: obj["Addresses\\ZIP"],
+          ZIP: obj["Addresses\\ZIP"].length < 5 ? obj["Addresses\\ZIP"] : "",
           EADC: obj["Email Addresses\\Date changed"],
           FNAME: obj["First name"],
           LNAME: obj["Last/Organization/Group/Household name"],
