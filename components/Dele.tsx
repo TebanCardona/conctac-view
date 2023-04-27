@@ -97,7 +97,15 @@ export default function Dele(props: { email: string }) {
         )}
         {state.deleted && (
           <div>
-            <p>{state.message}</p>
+            <p
+              style={{
+                fontSize: "x-large",
+                color: "#e0e1dd",
+                textAlign: "center",
+              }}
+            >
+              {state.message}
+            </p>
             <button
               onClick={() => {
                 setState((prev) => ({
