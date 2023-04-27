@@ -1,3 +1,6 @@
+import { ISend } from "@/types/contact";
+import { post } from "../exports";
+
 export interface Row {
   "First name": string;
   "Last/Organization/Group/Household name": string;
@@ -5,7 +8,7 @@ export interface Row {
   "Date changed": string;
   "Email Addresses\\Email address": string;
   "Email Addresses\\Date changed": string;
-  "Todays Visitors Attribute\\Value": "Yes" | "No";
+  "Todays Visitors Attribute\\Value": "Yes" | "No" | string;
   "Todays Visitors Attribute\\Date changed": string;
   "Addresses\\Address line 1": string;
   "Addresses\\Address line 2": string;
@@ -19,7 +22,7 @@ export interface Row {
 interface Obj {
   [key: string]: string;
 }
-export async function csvToArray(file: {}) {
+async function csvToArray(file: {}) {
   try {
     const csv = Object.keys(file)[0];
     const lines = csv.split("\n");
@@ -31,10 +34,55 @@ export async function csvToArray(file: {}) {
       for (let j: number = 0; j < headers.length; j++) {
         obj[headers[j]] = currentline[j];
       }
-      result.push(obj);
+      const contact: ISend = {
+        email_address: obj["Email Addresses\\Email address"],
+        status: "subscribed",
+        merge_fields: {
+          ADDRESS1: obj["Addresses\\Address line 1"],
+          ADDRESS2: obj["Addresses\\Address line 2"],
+          CITY: obj["Addresses\\City"],
+          COUNTRY: obj["Addresses\\Country abbreviation"],
+          STATE: obj["Addresses\\State abbreviation"],
+          ZIP: obj["Addresses\\ZIP"],
+          EADC: obj["Email Addresses\\Date changed"],
+          FNAME: obj["First name"],
+          LNAME: obj["Last/Organization/Group/Household name"],
+          PDC: obj["Phones\\Date changed"],
+          PHONE: obj["Phones\\Number"],
+          TVADC: obj["Todays Visitors Attribute\\Date changed"],
+          TVA: obj["Todays Visitors Attribute\\Value"],
+        },
+      };
+      result.push(contact);
     }
     return result;
   } catch (error) {
-    throw { error };
+    return { message: "File Not read", error };
   }
 }
+
+export const sendToMailchimp = async (file: string) => {
+  const data = (await csvToArray(file)) as ISend[] | { message: string };
+  if (Array.isArray(data)) {
+    const dataError: { email: string }[] = [];
+    const totalContacts = data.length;
+    let uploadedContacts = 0;
+    let i = 0;
+    while (data.length > i) {
+      const info = data.shift() as ISend;
+      try {
+        await post(info);
+        ++uploadedContacts;
+      } catch (error) {
+        dataError.push({ email: info.email_address });
+      } finally {
+      }
+    }
+
+    return {
+      message: `Uploaded ${uploadedContacts} of ${totalContacts}`,
+      dataError,
+    };
+  }
+  return data;
+};

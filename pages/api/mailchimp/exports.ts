@@ -1,6 +1,6 @@
 import md5 from "md5";
 import mailchimp, { Status } from "@mailchimp/mailchimp_marketing";
-import { IContact, IMember, ISend, ListOptions } from "../../../types/contact";
+import { IContact, IMember, ISend } from "../../../types/contact";
 
 mailchimp.setConfig({
   apiKey: process.env.NEXT_PUBLIC_apikey,
@@ -53,6 +53,7 @@ export async function get(id?: string | null, opt?: Status) {
       status: opt,
       count: 1000,
     });
+
     if ("members" in res) {
       return organize(res);
     }
@@ -73,7 +74,11 @@ export async function post(contact: ISend) {
     }
     return "Reject";
   } catch (error) {
-    throw { message: "Error of Mailchimp", error };
+    throw {
+      message: "Error of Mailchimp",
+      error,
+      email: contact.email_address,
+    };
   }
 }
 

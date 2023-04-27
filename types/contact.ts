@@ -22,7 +22,7 @@ export interface IPhone {
   dateChanged?: string;
 }
 export interface ITodayVisitorsAttribute {
-  value?: "Yes" | "No";
+  value?: "Yes" | "No" | string;
   dateChanged?: string;
 }
 export interface IContact {
@@ -42,7 +42,7 @@ export interface IMerge_fields {
   ADDRESS1?: string;
   PHONE?: string;
   BIRTHDAY?: string;
-  TVA?: "Yes" | "No";
+  TVA?: "Yes" | "No" | string;
   TVADC?: string;
   PDC?: string;
   EADC?: string;

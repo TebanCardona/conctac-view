@@ -36,7 +36,6 @@ export default function Add() {
           charging: false,
           dataError: response.data.dataError,
         }));
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);

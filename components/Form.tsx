@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Status, ISend, IContact } from "@/types/contact";
 import styles from "@/styles/Edit.module.css";
+import Loading from "./Loading";
 interface IForm {
   [key: string]: any;
   first_Name?: string;
   last_Name?: string;
   email: string;
-  tva?: "Yes" | "No";
+  tva?: "Yes" | "No" | string;
   line_1?: string;
   line_2?: string;
   city?: string;
@@ -19,6 +20,7 @@ interface IForm {
 }
 interface IRes {
   message: string | null;
+  loading: boolean;
 }
 export default function Form(props?: { contact?: IContact }) {
   const data = {
@@ -54,9 +56,13 @@ export default function Form(props?: { contact?: IContact }) {
     number: contact?.phone?.number ? contact.phone?.number : "",
     status: contact?.status ? contact.status : "subscribed",
   });
-  const [res, setRes] = useState<IRes>({ message: null });
+  const [res, setRes] = useState<IRes>({ message: null, loading: false });
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setRes((prev) => ({
+      ...prev,
+      loading: true,
+    }));
     if (formData.zip?.toString().length <= 4 && formData.zip !== "") {
       setRes((prev) => ({
         ...prev,
@@ -102,9 +108,18 @@ export default function Form(props?: { contact?: IContact }) {
         }));
       })
       .catch(function (error) {
+        const mail = error.response.data.error.response.text
+          ? error.response.data.error.response.text
+          : "";
         setRes((prev) => ({
           ...prev,
-          message: error.response.data.message,
+          message: `${error.response.data.message}: ${JSON.parse(mail).detail}`,
+        }));
+      })
+      .finally(() => {
+        setRes((prev) => ({
+          ...prev,
+          loading: false,
         }));
       });
   };
@@ -204,6 +219,7 @@ export default function Form(props?: { contact?: IContact }) {
           <button type="submit">Submit</button>
         </div>
       </form>
+      {res.loading && <Loading />}
       <p>{res.message}</p>
     </div>
   );
