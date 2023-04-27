@@ -17,6 +17,7 @@ export default function Home() {
     contactsFilter: context.state.contacts,
   });
   const status = [
+    "all",
     "subscribed",
     "unsubcribed",
     "archived",
@@ -25,7 +26,14 @@ export default function Home() {
     "transactional",
   ];
   const [download, setdownload] = useState(false);
-  const changeContact = (options: {}) => {
+  const changeContact = (options: {
+    method: string;
+    url: string;
+    params?: { opt: string } | null;
+  }) => {
+    if (options.params?.opt === "all") {
+      options.params = null;
+    }
     setState((prev) => ({
       ...prev,
       loading: true,

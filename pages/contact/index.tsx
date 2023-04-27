@@ -24,6 +24,8 @@ const Contact = () => {
       axios
         .request(options)
         .then(function (response) {
+          console.log(response.data[0].status);
+
           context.dispatch({ type: "contact", payload: response.data[0] });
         })
         .catch(function (error) {
@@ -75,6 +77,7 @@ const Contact = () => {
             System Record Id:{" "}
             {contact.systemRecordId ? contact.systemRecordId : un}
           </p>
+          <p>Status: {contact.status}</p>
           <p>Firts Name: {contact.firtsName ? contact.firtsName : un}</p>
           <p>Last Name: {contact.lastName ? contact.lastName : un}</p>
           <p>Last Date Changed: {contact.dateChanged.split("T")[0]}</p>
