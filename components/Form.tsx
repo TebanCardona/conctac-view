@@ -180,7 +180,7 @@ export default function Form(props?: { contact?: IContact }) {
           </div>
           <div>
             <label htmlFor="Status">Status </label>
-            <select name="status" id="status" required>
+            <select name="status" id="status" required onChange={handleChange}>
               {data.status.map((el) => (
                 <option
                   value={el}
