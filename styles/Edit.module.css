@@ -45,22 +45,19 @@
   font: inherit;
   font-size: 1.125rem;
   padding: .25rem 0;
-  color: #e0e1dd;
+  color: #778da9;
   box-sizing: border-box;
+  margin: 1em
 }
 
-.main select {
+.main select:focus {
   outline: 0;
   border-bottom-color: #6658d3;
 }
 
 .main input:focus,
-.main input:valid {
+.main input:-internal-autofill-selected {
   outline: 0;
+  background-color: transparent;
   border-bottom-color: #6658d3;
-}
-
-.input-fiel:focus:valid+.main label {
-  color: #6658d3;
-  transform: translateY(-1.5rem);
 }

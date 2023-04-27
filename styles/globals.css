@@ -77,11 +77,11 @@ a:hover {
 html {
   background: hsla(211, 53%, 11%, 1);
 
-  background: linear-gradient(135deg, hsla(211, 53%, 11%, 1) 38%, hsla(214, 23%, 56%, 1) 100%);
+  background: linear-gradient(300deg, hsla(211, 53%, 11%, 1) 38%, hsla(214, 23%, 56%, 1) 100%);
 
-  background: -moz-linear-gradient(135deg, hsla(211, 53%, 11%, 1) 38%, hsla(214, 23%, 56%, 1) 100%);
+  background: -moz-linear-gradient(300deg, hsla(211, 53%, 11%, 1) 38%, hsla(214, 23%, 56%, 1) 100%);
 
-  background: -webkit-linear-gradient(135deg, hsla(211, 53%, 11%, 1) 38%, hsla(214, 23%, 56%, 1) 100%);
+  background: -webkit-linear-gradient(300deg, hsla(211, 53%, 11%, 1) 38%, hsla(214, 23%, 56%, 1) 100%);
 
   filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#0D1B2A", endColorstr="#778DA9", GradientType=1);
 }

@@ -123,9 +123,7 @@ export default function Form(props?: { contact?: IContact }) {
         <div className={`${styles.form}`}>
           {" "}
           <div>
-            <label htmlFor="Email" className={`${styles["input-label"]}`}>
-              Email{" "}
-            </label>
+            <label htmlFor="Email">Email </label>
             <input
               type="email"
               name="email"
@@ -133,6 +131,7 @@ export default function Form(props?: { contact?: IContact }) {
               value={formData.email}
               className={`${styles["input-field"]}`}
               onChange={handleChange}
+              placeholder="Type.."
             />
           </div>
           {data.name.map((el) => {
@@ -147,6 +146,7 @@ export default function Form(props?: { contact?: IContact }) {
                   id={el}
                   value={formData[el]}
                   onChange={handleChange}
+                  placeholder="Type..."
                 />
               </div>
             );
@@ -185,6 +185,7 @@ export default function Form(props?: { contact?: IContact }) {
               id="number"
               value={formData.number}
               onChange={handleChange}
+              placeholder="Type.."
             />
           </div>
           <div>
@@ -195,6 +196,7 @@ export default function Form(props?: { contact?: IContact }) {
               id="zip"
               value={formData.zip}
               onChange={handleChange}
+              placeholder="Type.."
             />
           </div>
         </div>
